@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0004
+Cobertura: RC
+Fecha evento: 2026-04-30
+Monto reclamado: 37456.00
+Placa: ABC-104
+Narrativa: Daño menor en puerta posterior por maniobra de estacionamiento en centro comercial.

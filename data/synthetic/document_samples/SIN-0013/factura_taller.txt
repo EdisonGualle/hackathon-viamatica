@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0013
+Fecha emision: 2026-02-13
+Proveedor: PRV-020
+Monto: 6138.72
+Placa: ABC-113
+Referencia siniestro: SIN-0013

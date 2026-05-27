@@ -1,0 +1,8 @@
+FACTURA TALLER
+Numero: FAC-SIN-0024
+Fecha emision: 2026-02-07
+Proveedor: PRV-013
+Monto: 14160.18
+Placa: ABC-124
+Referencia siniestro: SIN-0024
+ILEGIBLE ### BORRADO ###

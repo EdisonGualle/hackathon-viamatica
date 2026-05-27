@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0055
+Cobertura: Todo Riesgo
+Fecha evento: 2026-03-25
+Monto reclamado: 1533.00
+Placa: ABC-155
+Narrativa: El asegurado indica que dejo el vehiculo estacionado y al retornar ya no se encontraba en el lugar.

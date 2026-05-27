@@ -1,0 +1,8 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0048
+Cobertura: Inundacion
+Fecha evento: 2026-02-05
+Monto reclamado: 1675.00
+Placa: ABC-148
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.
+ILEGIBLE ### BORRADO ###

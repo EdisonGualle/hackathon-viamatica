@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-RF07-P
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-676
+Referencia siniestro: TC-RF07-P

@@ -1,0 +1,8 @@
+FACTURA TALLER
+Numero: FAC-SIN-0018
+Fecha emision: 2026-03-18
+Proveedor: PRV-015
+Monto: 5657.54
+Placa: ABC-118
+Referencia siniestro: SIN-0018
+ILEGIBLE ### BORRADO ###

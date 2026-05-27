@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-C06
+Fecha emision: 2026-05-21
+Proveedor: PRV-888
+Monto: 7840.00
+Placa: TC-465
+Referencia siniestro: TC-C06

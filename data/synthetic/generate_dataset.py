@@ -6,6 +6,11 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import pandas as pd
+from data.synthetic.generate_documents import (
+    build_beneficiarios_from_claims,
+    build_document_records_from_claims,
+    build_vehiculos_from_claims,
+)
 
 SEED = 42
 random.seed(SEED)
@@ -65,6 +70,10 @@ def build_proveedores(n: int = 20) -> pd.DataFrame:
     rows = []
     for i in range(1, n + 1):
         pct_observados = round(random.uniform(0.03, 0.34), 2)
+        if i == 1:
+            pct_observados = 0.08
+        if i == 2:
+            pct_observados = 0.11
         if i == 13:
             pct_observados = 0.28
         if i == 20:
@@ -136,6 +145,9 @@ def build_claim_row(index: int, poliza: pd.Series, asegurado: pd.Series, proveed
         coverage = 'PTxRB'
     ramo = poliza['ramo']
     monto = random.randint(1200, int(poliza['suma_asegurada'] * 0.98))
+    id_vehiculo = f'VEH-{((index - 1) % 48) + 1:03d}'
+    placa_vehiculo = f'ABC-{(100 + index):03d}'
+    chasis_vehiculo = f'CHS{index:06d}'
     return {
         'id_siniestro': f'SIN-{index:04d}',
         'id_poliza': poliza['id_poliza'],
@@ -143,6 +155,9 @@ def build_claim_row(index: int, poliza: pd.Series, asegurado: pd.Series, proveed
         'id_proveedor': proveedor['id_proveedor'],
         'id_conductor': conductor['id_conductor'],
         'id_beneficiario': f'BEN-{((index - 1) % 10) + 1:03d}',
+        'id_vehiculo': id_vehiculo,
+        'placa_vehiculo': placa_vehiculo,
+        'chasis_vehiculo': chasis_vehiculo,
         'ramo': ramo,
         'cobertura': coverage,
         'ciudad': asegurado['ciudad'],
@@ -181,27 +196,11 @@ def build_siniestros(polizas: pd.DataFrame, asegurados: pd.DataFrame, proveedore
         rows.append(row)
     return pd.DataFrame(rows)
 
-
-def build_documentos(siniestros: pd.DataFrame) -> pd.DataFrame:
-    rows = []
-    for _, sin in siniestros.iterrows():
-        for doc in DOCUMENT_TYPES:
-            inconsistente = 1 if (doc in {'factura_taller', 'parte_policial'} and sin['id_siniestro'].endswith(('7', '9'))) else 0
-            rows.append(
-                {
-                    'id_documento': f"DOC-{sin['id_siniestro']}-{doc}",
-                    'id_siniestro': sin['id_siniestro'],
-                    'tipo_documento': doc,
-                    'inconsistencia_detectada': inconsistente,
-                }
-            )
-    return pd.DataFrame(rows)
-
-
 def build_test_cases() -> pd.DataFrame:
     cases = []
 
     def add(case_id: str, objetivo: str, rule_id: str, nivel: str, tipo: str, **kwargs):
+        case_number = sum(ord(ch) for ch in case_id) % 900 + 100
         base = {
             'id_siniestro': case_id,
             'objetivo': objetivo,
@@ -213,6 +212,9 @@ def build_test_cases() -> pd.DataFrame:
             'id_proveedor': 'PRV-001',
             'id_conductor': f'CON-{case_id}',
             'id_beneficiario': f'BEN-{case_id}',
+            'id_vehiculo': f'VEH-{case_id}',
+            'placa_vehiculo': f'TC-{case_number:03d}',
+            'chasis_vehiculo': f'CHS-{case_id}',
             'ramo': 'Vehiculos',
             'cobertura': 'Todo Riesgo',
             'ciudad': 'Quito',
@@ -230,7 +232,7 @@ def build_test_cases() -> pd.DataFrame:
             'suma_asegurada': 16000,
             'actor_en_lista_restrictiva_tipo': '',
             'beneficiario_en_lista': 0,
-            'descripcion': 'Colision leve con tercero identificado y documentos consistentes.',
+            'descripcion': f'Colision leve control {case_id} con tercero identificado y documentos consistentes.',
         }
         base.update(kwargs)
         cases.append(base)
@@ -245,10 +247,10 @@ def build_test_cases() -> pd.DataFrame:
     add('TC-RF04-N', 'Dinamica consistente no activa RF-04', 'RF-04', 'VERDE', 'negativo')
     add('TC-RF05-P', 'Borde de vigencia activa RF-05', 'RF-05', 'AMARILLO', 'positivo', dias_inicio_poliza=1)
     add('TC-RF05-N', 'Sin borde de vigencia no activa RF-05', 'RF-05', 'VERDE', 'negativo', dias_inicio_poliza=50)
-    add('TC-RF06-P', 'Demora de robo activa RF-06', 'RF-06', 'AMARILLO', 'positivo', cobertura='PTxRB', dias_ocurr_reporte=6)
-    add('TC-RF06-N', 'Robo reportado rapido no activa RF-06', 'RF-06', 'VERDE', 'negativo', cobertura='PTxRB', dias_ocurr_reporte=1)
+    add('TC-RF06-P', 'Demora de robo activa RF-06', 'RF-06', 'AMARILLO', 'positivo', cobertura='Robo Total', dias_ocurr_reporte=6)
+    add('TC-RF06-N', 'Robo reportado rapido no activa RF-06', 'RF-06', 'VERDE', 'negativo', cobertura='Robo Total', dias_ocurr_reporte=1)
     add('TC-RF07-P', 'Narrativa clonada activa RF-07', 'RF-07', 'AMARILLO', 'positivo', descripcion=NARRATIVES_CLONED[0])
-    add('TC-RF07-N', 'Narrativa distinta no activa RF-07', 'RF-07', 'VERDE', 'negativo', descripcion=NARRATIVES_NORMAL[0])
+    add('TC-RF07-N', 'Narrativa distinta no activa RF-07', 'RF-07', 'VERDE', 'negativo', descripcion='Narrativa unica negativa TC-RF07-N sin patron repetido.')
 
     signal_specs = [
         ('TC-S01', 'S01', 'AMARILLO', dict(dias_inicio_poliza=4)),
@@ -257,7 +259,7 @@ def build_test_cases() -> pd.DataFrame:
         ('TC-S04', 'S04', 'AMARILLO', dict(historial_vehiculo_18m=3)),
         ('TC-S05', 'S05', 'AMARILLO', dict(historial_conductor_18m=3)),
         ('TC-S06', 'S06', 'AMARILLO', dict(solo_rc_recurrente=1, cobertura='RC')),
-        ('TC-S07', 'S07', 'AMARILLO', dict(actor_en_lista_restrictiva_tipo='proveedor')),
+        ('TC-S07', 'S07', 'AMARILLO', dict(id_proveedor='PRV-013', actor_en_lista_restrictiva_tipo='')),
         ('TC-S08', 'S08', 'AMARILLO', dict(documentos_completos=0)),
         ('TC-S09', 'S09', 'AMARILLO', dict(descripcion='La narrativa presenta vacios relevantes sobre lugar, hora y tercero involucrado.')),
         ('TC-S10', 'S10', 'AMARILLO', dict(sin_tercero_identificado=1)),
@@ -291,7 +293,7 @@ def build_test_cases() -> pd.DataFrame:
         ('TC-A02', 'caso con narrativa clonada para preguntas del agente', 'RF-07', 'AMARILLO', dict(descripcion=NARRATIVES_CLONED[0])),
         ('TC-A03', 'caso con monto atipico para preguntas del agente', 'S14', 'AMARILLO', dict(monto_reclamado=15900, suma_asegurada=16000)),
         ('TC-A04', 'caso con borde de vigencia para preguntas del agente', 'RF-05', 'AMARILLO', dict(dias_inicio_poliza=1)),
-        ('TC-A05', 'caso con demora de robo para preguntas del agente', 'RF-06', 'AMARILLO', dict(cobertura='PTxRB', dias_ocurr_reporte=7)),
+        ('TC-A05', 'caso con demora de robo para preguntas del agente', 'RF-06', 'AMARILLO', dict(cobertura='Robo Total', dias_ocurr_reporte=7)),
     ]
     for case_id, objetivo, rule_id, nivel, payload in agent_specs:
         add(case_id, objetivo, rule_id, nivel, 'agente', **payload)
@@ -386,6 +388,9 @@ def build_test_case_siniestros(test_cases: pd.DataFrame) -> pd.DataFrame:
                 'id_proveedor': row['id_proveedor'],
                 'id_conductor': row['id_conductor'],
                 'id_beneficiario': row['id_beneficiario'],
+                'id_vehiculo': row['id_vehiculo'],
+                'placa_vehiculo': row['placa_vehiculo'],
+                'chasis_vehiculo': row['chasis_vehiculo'],
                 'ramo': row['ramo'],
                 'cobertura': row['cobertura'],
                 'ciudad': row.get('ciudad', 'Quito'),
@@ -409,34 +414,25 @@ def build_test_case_siniestros(test_cases: pd.DataFrame) -> pd.DataFrame:
         )
     return pd.DataFrame(rows)
 
-
-def build_test_case_documentos(test_cases: pd.DataFrame) -> pd.DataFrame:
-    rows = []
-    for _, row in test_cases.iterrows():
-        for doc in DOCUMENT_TYPES:
-            inconsistente = 0
-            if row['regla_esperada'] == 'RF-02':
-                inconsistente = 1 if doc in {'parte_policial', 'factura_taller'} else 0
-            elif row['regla_esperada'] == 'S11':
-                inconsistente = 1 if doc == 'factura_taller' else 0
-            rows.append(
-                {
-                    'id_documento': f"DOC-{row['id_siniestro']}-{doc}",
-                    'id_siniestro': row['id_siniestro'],
-                    'tipo_documento': doc,
-                    'inconsistencia_detectada': inconsistente,
-                }
-            )
-    return pd.DataFrame(rows)
-
-
-def persist_tables(db_path: Path, asegurados: pd.DataFrame, proveedores: pd.DataFrame, polizas: pd.DataFrame, conductores: pd.DataFrame, siniestros: pd.DataFrame, documentos: pd.DataFrame) -> None:
+def persist_tables(
+    db_path: Path,
+    asegurados: pd.DataFrame,
+    proveedores: pd.DataFrame,
+    polizas: pd.DataFrame,
+    conductores: pd.DataFrame,
+    vehiculos: pd.DataFrame,
+    beneficiarios: pd.DataFrame,
+    siniestros: pd.DataFrame,
+    documentos: pd.DataFrame,
+) -> None:
     db_path.parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(db_path) as conn:
         asegurados.to_sql('asegurados', conn, if_exists='replace', index=False)
         proveedores.to_sql('proveedores', conn, if_exists='replace', index=False)
         polizas.to_sql('polizas', conn, if_exists='replace', index=False)
         conductores.to_sql('conductores', conn, if_exists='replace', index=False)
+        vehiculos.to_sql('vehiculos', conn, if_exists='replace', index=False)
+        beneficiarios.to_sql('beneficiarios', conn, if_exists='replace', index=False)
         siniestros.to_sql('siniestros', conn, if_exists='replace', index=False)
         documentos.to_sql('documentos', conn, if_exists='replace', index=False)
 
@@ -448,22 +444,22 @@ def main() -> None:
     polizas = build_polizas(asegurados)
     conductores = build_conductores()
     siniestros = build_siniestros(polizas, asegurados, proveedores, conductores)
-    documentos = build_documentos(siniestros)
     test_cases = build_test_cases()
 
     asegurados_tc = build_test_case_asegurados(test_cases)
     polizas_tc = build_test_case_polizas(test_cases)
     conductores_tc = build_test_case_conductores(test_cases)
     siniestros_tc = build_test_case_siniestros(test_cases)
-    documentos_tc = build_test_case_documentos(test_cases)
 
     asegurados = pd.concat([asegurados, asegurados_tc], ignore_index=True)
     polizas = pd.concat([polizas, polizas_tc], ignore_index=True)
     conductores = pd.concat([conductores, conductores_tc], ignore_index=True)
     siniestros = pd.concat([siniestros, siniestros_tc], ignore_index=True)
-    documentos = pd.concat([documentos, documentos_tc], ignore_index=True)
+    vehiculos = build_vehiculos_from_claims(siniestros)
+    beneficiarios = build_beneficiarios_from_claims(siniestros)
+    documentos = build_document_records_from_claims(siniestros)
 
-    persist_tables(DB_PATH, asegurados, proveedores, polizas, conductores, siniestros, documentos)
+    persist_tables(DB_PATH, asegurados, proveedores, polizas, conductores, vehiculos, beneficiarios, siniestros, documentos)
     test_cases.to_csv(TEST_CASES_PATH, index=False)
 
     print(f'Base sintetica generada en: {DB_PATH}')

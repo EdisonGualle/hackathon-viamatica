@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0028
+Cobertura: Incendio
+Fecha evento: 2026-05-27
+Monto reclamado: 5900.00
+Placa: ABC-128
+Narrativa: Rotura de parabrisas por proyeccion de piedra en carretera interprovincial.

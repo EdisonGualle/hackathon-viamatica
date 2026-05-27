@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0006
+Cobertura: Incendio
+Fecha evento: 2026-01-18
+Monto reclamado: 9428.00
+Placa: ABC-106
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.

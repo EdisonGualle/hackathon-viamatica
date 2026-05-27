@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0059
+Cobertura: RC
+Fecha evento: 2026-04-07
+Monto reclamado: 10900.00
+Placa: ABC-159
+Narrativa: Colision leve en interseccion con danos en defensa delantera y guardafango.

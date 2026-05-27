@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0087
+Fecha emision: 2025-12-14
+Proveedor: PRV-002
+Monto: 13129.12
+Placa: ABC-187
+Referencia siniestro: SIN-0087

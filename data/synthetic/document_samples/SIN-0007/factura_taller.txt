@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0007
+Fecha emision: 2026-03-12
+Proveedor: PRV-002
+Monto: 1403.36
+Placa: ABC-107
+Referencia siniestro: SIN-0007

@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0069
+Fecha emision: 2026-02-23
+Proveedor: PRV-008
+Monto: 11969.10
+Placa: ABC-169
+Referencia siniestro: SIN-0069

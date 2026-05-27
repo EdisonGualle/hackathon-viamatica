@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-A05
+Cobertura: Robo Total
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-462
+Narrativa: Colision leve control TC-A05 con tercero identificado y documentos consistentes.

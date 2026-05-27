@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0067
+Fecha emision: 2025-12-16
+Proveedor: PRV-002
+Monto: 13345.64
+Placa: ABC-167
+Referencia siniestro: SIN-0067

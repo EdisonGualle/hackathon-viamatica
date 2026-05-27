@@ -60,6 +60,7 @@ class ScoreResult:
 
 RULE_ACTION_REVIEW = 'Revisión documental prioritaria por Unidad Antifraude'
 RULE_ACTION_ESCALATE = 'Escalar a revisión especializada'
+CRITICAL_DOCUMENT_CODES = {'DOC-FECHA-PREVIA', 'DOC-PROVEEDOR-DISTINTO', 'DOC-DENUNCIA-AUSENTE'}
 
 
 def _normalize_text(value: object) -> str:
@@ -90,6 +91,21 @@ def _rule(codigo: str, nombre: str, tipo: str, activada: bool, nivel: str, punto
     )
 
 
+def _document_ai_alerts(id_siniestro: str, doc_ai_df: pd.DataFrame | None) -> list[dict]:
+    if doc_ai_df is None or doc_ai_df.empty or 'inconsistencias_json' not in doc_ai_df.columns:
+        return []
+    claim_docs = doc_ai_df[doc_ai_df['id_siniestro'] == id_siniestro]
+    alerts: list[dict] = []
+    for raw in claim_docs['inconsistencias_json'].fillna('[]'):
+        try:
+            parsed = json.loads(raw or '[]')
+        except Exception:
+            parsed = []
+        if isinstance(parsed, list):
+            alerts.extend(item for item in parsed if isinstance(item, dict))
+    return alerts
+
+
 def rf01_perdida_total_robo(row: pd.Series) -> RuleResult:
     coverage = _normalize_text(row.get('cobertura'))
     ramo = _normalize_text(row.get('ramo'))
@@ -98,13 +114,15 @@ def rf01_perdida_total_robo(row: pd.Series) -> RuleResult:
     return _rule('RF-01', 'Cobertura PTxRB activada', 'regla_critica', activated, 'ROJO', 40, 'cobertura', f"Cobertura {row.get('cobertura')} en ramo Vehiculos.", 'La cobertura de pérdida total por robo exige validación reforzada por tipología crítica del reto.', RULE_ACTION_ESCALATE)
 
 
-def rf02_falsificacion_documental(row: pd.Series, docs_df: pd.DataFrame) -> RuleResult:
+def rf02_falsificacion_documental(row: pd.Series, docs_df: pd.DataFrame, doc_ai_df: pd.DataFrame | None = None) -> RuleResult:
     docs = docs_df[docs_df['id_siniestro'] == row['id_siniestro']]
-    inconsistencias = int(docs['inconsistencia_detectada'].sum()) if not docs.empty else 0
+    ai_alerts = _document_ai_alerts(str(row['id_siniestro']), doc_ai_df)
+    critical_alerts = [alert for alert in ai_alerts if alert.get('codigo') in CRITICAL_DOCUMENT_CODES]
+    inconsistencias = len(critical_alerts) if ai_alerts else int(docs['inconsistencia_detectada'].sum()) if not docs.empty else 0
     desc = _normalize_text(row.get('descripcion'))
     texto_sospechoso = any(token in desc for token in ['inconsistencia documental', 'adulter', 'falsific'])
     activated = inconsistencias > 0 or texto_sospechoso
-    evidence = f'{inconsistencias} documento(s) con inconsistencia detectada.' if inconsistencias > 0 else 'Narrativa menciona inconsistencia documental.'
+    evidence = f'{inconsistencias} documento(s) con inconsistencia documental crítica.' if inconsistencias > 0 else 'Narrativa menciona inconsistencia documental.'
     return _rule('RF-02', 'Falsificación o adulteración documental', 'regla_critica', activated, 'ROJO', 35, 'documentos', evidence, 'La evidencia documental inconsistente es una señal crítica del reto.', RULE_ACTION_ESCALATE)
 
 
@@ -156,7 +174,7 @@ def rf05_borde_vigencia(row: pd.Series) -> RuleResult:
 def rf06_demora_robo(row: pd.Series) -> RuleResult:
     cobertura = _normalize_text(row.get('cobertura'))
     dias = int(row.get('dias_ocurr_reporte', 0))
-    activated = cobertura == 'ptxrb' and dias > 4
+    activated = 'robo' in cobertura and dias > 4
     return _rule('RF-06', 'Demora atípica en denuncia de robo', 'regla_amarilla', activated, 'AMARILLO', 10, 'dias_ocurr_reporte', f'Denuncia de robo realizada {dias} días después del evento.' if activated else '', 'La demora superior al umbral del reto amerita revisión prioritaria.', RULE_ACTION_REVIEW)
 
 
@@ -181,7 +199,7 @@ def signal_s01_borde_vigencia(row: pd.Series) -> RuleResult:
 def signal_s02_demora_robo(row: pd.Series) -> RuleResult:
     dias = int(row.get('dias_ocurr_reporte', 0))
     cobertura = _normalize_text(row.get('cobertura'))
-    activated = cobertura == 'ptxrb' and dias > 2
+    activated = 'robo' in cobertura and dias > 2
     pts = 5 if dias > 4 else 3
     return _rule('S02', 'Demora en denuncia por robo', 'senal_score', activated, 'AMARILLO', pts, 'dias_ocurr_reporte', f'Denuncia con {dias} día(s) de demora.' if activated else '', 'La demora en denuncias de robo incrementa el riesgo de inconsistencia.', RULE_ACTION_REVIEW)
 
@@ -237,9 +255,10 @@ def signal_s10_sin_tercero(row: pd.Series) -> RuleResult:
     return _rule('S10', 'Evento sin tercero identificado', 'senal_score', activated, 'AMARILLO', 5, 'sin_tercero_identificado', 'El evento se reporta sin tercero identificado.' if activated else '', 'La ausencia de tercero identificado incrementa necesidad de verificación.', RULE_ACTION_REVIEW)
 
 
-def signal_s11_documentos_inconsistentes(row: pd.Series, docs_df: pd.DataFrame) -> RuleResult:
+def signal_s11_documentos_inconsistentes(row: pd.Series, docs_df: pd.DataFrame, doc_ai_df: pd.DataFrame | None = None) -> RuleResult:
     docs = docs_df[docs_df['id_siniestro'] == row['id_siniestro']]
-    inconsistencias = int(docs['inconsistencia_detectada'].sum()) if not docs.empty else 0
+    ai_alerts = _document_ai_alerts(str(row['id_siniestro']), doc_ai_df)
+    inconsistencias = len(ai_alerts) if ai_alerts else int(docs['inconsistencia_detectada'].sum()) if not docs.empty else 0
     desc = _normalize_text(row.get('descripcion'))
     activated = inconsistencias > 0 or 'inconsistencias' in desc
     pts = 6 if inconsistencias > 0 else 4
@@ -263,10 +282,10 @@ def signal_s14_monto_cercano(row: pd.Series, polizas_df: pd.DataFrame) -> RuleRe
     return _rule('S14', 'Monto cercano a suma asegurada', 'senal_score', activated, 'AMARILLO', pts, 'monto_reclamado', f'Monto reclamado equivale al {ratio:.0%} de la suma asegurada.' if activated else '', 'La cercanía del monto a la suma asegurada incrementa el riesgo de revisión.', RULE_ACTION_REVIEW)
 
 
-def _build_all_rules(row: pd.Series, siniestros_df: pd.DataFrame, polizas_df: pd.DataFrame, proveedores_df: pd.DataFrame, docs_df: pd.DataFrame, asegurados_df: pd.DataFrame | None = None) -> list[RuleResult]:
+def _build_all_rules(row: pd.Series, siniestros_df: pd.DataFrame, polizas_df: pd.DataFrame, proveedores_df: pd.DataFrame, docs_df: pd.DataFrame, asegurados_df: pd.DataFrame | None = None, doc_ai_df: pd.DataFrame | None = None) -> list[RuleResult]:
     return [
         rf01_perdida_total_robo(row),
-        rf02_falsificacion_documental(row, docs_df),
+        rf02_falsificacion_documental(row, docs_df, doc_ai_df),
         rf03_lista_restrictiva(row, proveedores_df, asegurados_df),
         rf04_dinamica_imposible(row),
         rf05_borde_vigencia(row),
@@ -282,7 +301,7 @@ def _build_all_rules(row: pd.Series, siniestros_df: pd.DataFrame, polizas_df: pd
         signal_s08_documentos_incompletos(row),
         signal_s09_dinamica_sospechosa(row),
         signal_s10_sin_tercero(row),
-        signal_s11_documentos_inconsistentes(row, docs_df),
+        signal_s11_documentos_inconsistentes(row, docs_df, doc_ai_df),
         signal_s12_reporte_tardio(row),
         signal_s14_monto_cercano(row, polizas_df),
     ]
@@ -303,8 +322,8 @@ def _build_explanation(results: list[RuleResult]) -> str:
     return ' | '.join(f'{result.codigo}: {result.evidencia or result.explicacion}' for result in active)
 
 
-def calcular_score_reglas(row: pd.Series, siniestros_df: pd.DataFrame, polizas_df: pd.DataFrame, proveedores_df: pd.DataFrame, docs_df: pd.DataFrame, asegurados_df: pd.DataFrame | None = None) -> ScoreResult:
-    results = _build_all_rules(row, siniestros_df, polizas_df, proveedores_df, docs_df, asegurados_df)
+def calcular_score_reglas(row: pd.Series, siniestros_df: pd.DataFrame, polizas_df: pd.DataFrame, proveedores_df: pd.DataFrame, docs_df: pd.DataFrame, asegurados_df: pd.DataFrame | None = None, doc_ai_df: pd.DataFrame | None = None) -> ScoreResult:
+    results = _build_all_rules(row, siniestros_df, polizas_df, proveedores_df, docs_df, asegurados_df, doc_ai_df)
     active = [result for result in results if result.activada]
     critical_active = [result for result in active if result.codigo in CRITICAL_RULES]
     base_score = sum(result.puntos for result in active)
@@ -328,17 +347,20 @@ def calcular_score_reglas(row: pd.Series, siniestros_df: pd.DataFrame, polizas_d
 
 
 def procesar_todos(db_path: str) -> pd.DataFrame:
-    conn = sqlite3.connect(db_path)
-    siniestros_df = pd.read_sql('SELECT * FROM siniestros', conn)
-    polizas_df = pd.read_sql('SELECT * FROM polizas', conn)
-    proveedores_df = pd.read_sql('SELECT * FROM proveedores', conn)
-    docs_df = pd.read_sql('SELECT * FROM documentos', conn)
-    asegurados_df = pd.read_sql('SELECT * FROM asegurados', conn)
-    conn.close()
+    with sqlite3.connect(db_path) as conn:
+        siniestros_df = pd.read_sql('SELECT * FROM siniestros', conn)
+        polizas_df = pd.read_sql('SELECT * FROM polizas', conn)
+        proveedores_df = pd.read_sql('SELECT * FROM proveedores', conn)
+        docs_df = pd.read_sql('SELECT * FROM documentos', conn)
+        asegurados_df = pd.read_sql('SELECT * FROM asegurados', conn)
+        try:
+            doc_ai_df = pd.read_sql('SELECT * FROM document_ai_results', conn)
+        except Exception:
+            doc_ai_df = pd.DataFrame()
 
     rows = []
     for _, row in siniestros_df.iterrows():
-        score = calcular_score_reglas(row, siniestros_df, polizas_df, proveedores_df, docs_df, asegurados_df)
+        score = calcular_score_reglas(row, siniestros_df, polizas_df, proveedores_df, docs_df, asegurados_df, doc_ai_df)
         rows.append(
             {
                 'id_siniestro': score.id_siniestro,

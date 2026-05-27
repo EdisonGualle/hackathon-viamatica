@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-X04
+Fecha emision: 2026-05-28
+Proveedor: PRV-013
+Monto: 7840.00
+Placa: TC-484
+Referencia siniestro: TC-X04

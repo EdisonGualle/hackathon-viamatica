@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0041
+Cobertura: RC
+Fecha evento: 2026-02-04
+Monto reclamado: 24581.00
+Placa: ABC-141
+Narrativa: Colision leve en interseccion con danos en defensa delantera y guardafango.

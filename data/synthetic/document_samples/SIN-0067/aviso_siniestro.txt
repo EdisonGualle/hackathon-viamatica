@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0067
+Cobertura: Incendio
+Fecha evento: 2025-12-22
+Monto reclamado: 13618.00
+Placa: ABC-167
+Narrativa: Daño menor en puerta posterior por maniobra de estacionamiento en centro comercial.

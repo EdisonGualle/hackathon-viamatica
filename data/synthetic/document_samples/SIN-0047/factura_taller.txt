@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0047
+Fecha emision: 2026-01-02
+Proveedor: PRV-002
+Monto: 4716.74
+Placa: ABC-147
+Referencia siniestro: SIN-0047

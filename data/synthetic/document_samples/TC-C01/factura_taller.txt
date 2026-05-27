@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-C01
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-460
+Referencia siniestro: TC-C01

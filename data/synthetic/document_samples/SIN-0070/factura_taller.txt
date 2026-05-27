@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0070
+Fecha emision: 2026-04-10
+Proveedor: PRV-011
+Monto: 8925.84
+Placa: ABC-170
+Referencia siniestro: SIN-0070

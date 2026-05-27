@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0010
+Cobertura: PTxRB
+Fecha evento: 2026-02-22
+Monto reclamado: 19305.00
+Placa: ABC-110
+Narrativa: Choque lateral con tercero identificado y parte policial disponible.

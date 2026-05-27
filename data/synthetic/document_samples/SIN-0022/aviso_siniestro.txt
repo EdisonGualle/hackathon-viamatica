@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0022
+Cobertura: Incendio
+Fecha evento: 2026-01-17
+Monto reclamado: 26444.00
+Placa: ABC-122
+Narrativa: El asegurado indica que dejo el vehiculo estacionado y al retornar ya no se encontraba en el lugar.

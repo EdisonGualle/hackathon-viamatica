@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: SIN-0028
+Fecha inspeccion: 2026-05-27
+Placa: ABC-128
+Monto estimado: 12458.00
+Resultado: dano verificado.

@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0003
+Fecha emision: 2026-03-13
+Proveedor: PRV-010
+Monto: 7828.24
+Placa: ABC-103
+Referencia siniestro: SIN-0003

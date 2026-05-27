@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0022
+Fecha emision: 2026-01-18
+Proveedor: PRV-007
+Monto: 25915.12
+Placa: ABC-122
+Referencia siniestro: SIN-0022

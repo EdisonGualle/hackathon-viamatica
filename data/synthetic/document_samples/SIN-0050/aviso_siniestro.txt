@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0050
+Cobertura: Incendio
+Fecha evento: 2025-12-27
+Monto reclamado: 2976.00
+Placa: ABC-150
+Narrativa: Choque lateral con tercero identificado y parte policial disponible.

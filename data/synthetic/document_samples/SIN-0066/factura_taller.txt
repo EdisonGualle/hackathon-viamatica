@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0066
+Fecha emision: 2026-05-06
+Proveedor: PRV-019
+Monto: 15651.58
+Placa: ABC-166
+Referencia siniestro: SIN-0066

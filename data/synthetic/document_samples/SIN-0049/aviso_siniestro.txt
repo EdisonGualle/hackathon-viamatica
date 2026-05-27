@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0049
+Cobertura: Incendio
+Fecha evento: 2026-04-15
+Monto reclamado: 5382.00
+Placa: ABC-149
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.

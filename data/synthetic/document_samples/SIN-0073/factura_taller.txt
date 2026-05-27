@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0073
+Fecha emision: 2025-12-10
+Proveedor: PRV-020
+Monto: 7101.08
+Placa: ABC-173
+Referencia siniestro: SIN-0073

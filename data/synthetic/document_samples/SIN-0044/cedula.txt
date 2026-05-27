@@ -1,0 +1,3 @@
+IDENTIFICACION
+Asegurado: ASG-008
+Documento valido.

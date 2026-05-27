@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0033
+Fecha emision: 2026-05-17
+Proveedor: PRV-020
+Monto: 31691.24
+Placa: ABC-133
+Referencia siniestro: SIN-0033

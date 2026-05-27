@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-X19
+Fecha emision: 2026-05-28
+Proveedor: PRV-003
+Monto: 15484.00
+Placa: TC-490
+Referencia siniestro: TC-X19

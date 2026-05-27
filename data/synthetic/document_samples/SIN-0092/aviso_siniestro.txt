@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0092
+Cobertura: Inundacion
+Fecha evento: 2026-03-21
+Monto reclamado: 20526.00
+Placa: ABC-192
+Narrativa: Daño menor en puerta posterior por maniobra de estacionamiento en centro comercial.

@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-S14
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 15092.00
+Placa: TC-480
+Referencia siniestro: TC-S14

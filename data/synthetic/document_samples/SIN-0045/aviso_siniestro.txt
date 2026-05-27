@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0045
+Cobertura: Inundacion
+Fecha evento: 2026-02-09
+Monto reclamado: 26424.00
+Placa: ABC-145
+Narrativa: El conductor reporta un impacto imposible de reconstruir con los danos observados.

@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0065
+Fecha emision: 2026-02-06
+Proveedor: PRV-016
+Monto: 39227.44
+Placa: ABC-165
+Referencia siniestro: SIN-0065

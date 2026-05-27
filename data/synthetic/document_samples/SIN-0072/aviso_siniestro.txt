@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0072
+Cobertura: RC
+Fecha evento: 2026-05-04
+Monto reclamado: 15722.00
+Placa: ABC-172
+Narrativa: La narrativa presenta vacios relevantes sobre lugar, hora y tercero involucrado.

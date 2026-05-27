@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0057
+Cobertura: Inundacion
+Fecha evento: 2026-02-22
+Monto reclamado: 11126.00
+Placa: ABC-157
+Narrativa: Impacto por alcance en trafico lento con declaracion consistente del conductor.

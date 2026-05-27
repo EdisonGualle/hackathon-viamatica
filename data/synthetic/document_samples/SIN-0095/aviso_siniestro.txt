@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0095
+Cobertura: RC
+Fecha evento: 2026-04-26
+Monto reclamado: 12483.00
+Placa: ABC-195
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.

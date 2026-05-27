@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0011
+Cobertura: Inundacion
+Fecha evento: 2026-05-17
+Monto reclamado: 7174.00
+Placa: ABC-111
+Narrativa: El asegurado indica que dejo el vehiculo estacionado y al retornar ya no se encontraba en el lugar.

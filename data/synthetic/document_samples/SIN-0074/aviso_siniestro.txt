@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0074
+Cobertura: Todo Riesgo
+Fecha evento: 2026-02-28
+Monto reclamado: 22878.00
+Placa: ABC-174
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.

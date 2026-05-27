@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0023
+Cobertura: RC
+Fecha evento: 2026-02-05
+Monto reclamado: 9718.00
+Placa: ABC-123
+Narrativa: Colision leve en interseccion con danos en defensa delantera y guardafango.

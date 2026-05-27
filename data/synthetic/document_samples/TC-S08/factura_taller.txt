@@ -1,0 +1,8 @@
+FACTURA TALLER
+Numero: FAC-TC-S08
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-483
+Referencia siniestro: TC-S08
+ILEGIBLE ### BORRADO ###

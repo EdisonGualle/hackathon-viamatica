@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0030
+Fecha emision: 2025-12-07
+Proveedor: PRV-011
+Monto: 17591.00
+Placa: ABC-130
+Referencia siniestro: SIN-0030

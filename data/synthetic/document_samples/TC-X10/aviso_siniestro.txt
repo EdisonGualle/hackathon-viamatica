@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-X10
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-481
+Narrativa: Colision leve control TC-X10 con tercero identificado y documentos consistentes.

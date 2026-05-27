@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0012
+Fecha emision: 2025-12-05
+Proveedor: PRV-017
+Monto: 11884.46
+Placa: ABC-112
+Referencia siniestro: SIN-0012

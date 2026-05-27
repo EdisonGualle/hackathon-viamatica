@@ -15,9 +15,8 @@ app = FastAPI(title="FRAUDIA Claims API", version="1.0.0")
 
 
 def _query(sql: str, params: tuple = ()):
-    conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql(sql, conn, params=params)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        df = pd.read_sql(sql, conn, params=params)
     return df.to_dict("records")
 
 

@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0044
+Cobertura: PTxRB
+Fecha evento: 2026-02-12
+Monto reclamado: 16467.00
+Placa: ABC-144
+Narrativa: El asegurado indica que dejo el vehiculo estacionado y al retornar ya no se encontraba en el lugar.

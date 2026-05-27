@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0077
+Cobertura: RC
+Fecha evento: 2026-01-24
+Monto reclamado: 24943.00
+Placa: ABC-177
+Narrativa: El asegurado indica que dejo el vehiculo estacionado y al retornar ya no se encontraba en el lugar.

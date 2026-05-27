@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0036
+Cobertura: RC
+Fecha evento: 2026-04-12
+Monto reclamado: 31644.00
+Placa: ABC-136
+Narrativa: Existen inconsistencias entre la declaracion inicial y los documentos adjuntos.

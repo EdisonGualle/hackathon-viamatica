@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0091
+Fecha emision: 2026-03-16
+Proveedor: PRV-014
+Monto: 5715.36
+Placa: ABC-191
+Referencia siniestro: SIN-0091

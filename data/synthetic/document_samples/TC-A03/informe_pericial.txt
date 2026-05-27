@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: TC-A03
+Fecha inspeccion: 2026-05-29
+Placa: TC-460
+Monto estimado: 15900.00
+Resultado: dano verificado.

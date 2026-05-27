@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0058
+Cobertura: Incendio
+Fecha evento: 2026-04-30
+Monto reclamado: 2882.00
+Placa: ABC-158
+Narrativa: Choque lateral con tercero identificado y parte policial disponible.

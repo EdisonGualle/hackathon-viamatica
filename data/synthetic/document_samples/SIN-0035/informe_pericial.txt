@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: SIN-0035
+Fecha inspeccion: 2026-02-09
+Placa: ABC-135
+Monto estimado: 27122.00
+Resultado: dano verificado.

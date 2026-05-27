@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-X05
+Fecha emision: 2026-05-21
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-485
+Referencia siniestro: TC-X05

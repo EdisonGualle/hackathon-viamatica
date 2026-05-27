@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0009
+Cobertura: Inundacion
+Fecha evento: 2026-05-25
+Monto reclamado: 3665.00
+Placa: ABC-109
+Narrativa: El vehiculo aparecio abandonado sin rastro del tercero y con version poco consistente.

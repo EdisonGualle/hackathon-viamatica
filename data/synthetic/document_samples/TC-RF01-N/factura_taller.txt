@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-RF01-N
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-668
+Referencia siniestro: TC-RF01-N

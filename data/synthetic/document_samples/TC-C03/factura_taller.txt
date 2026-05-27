@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-C03
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-462
+Referencia siniestro: TC-C03

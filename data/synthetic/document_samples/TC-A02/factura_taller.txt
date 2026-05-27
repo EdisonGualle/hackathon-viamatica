@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-A02
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-459
+Referencia siniestro: TC-A02

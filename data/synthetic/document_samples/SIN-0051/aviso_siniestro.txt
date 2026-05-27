@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0051
+Cobertura: PTxRB
+Fecha evento: 2026-01-29
+Monto reclamado: 2847.00
+Placa: ABC-151
+Narrativa: Impacto por alcance en trafico lento con declaracion consistente del conductor.

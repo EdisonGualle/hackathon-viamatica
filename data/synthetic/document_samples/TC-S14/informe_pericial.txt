@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: TC-S14
+Fecha inspeccion: 2026-05-29
+Placa: TC-480
+Monto estimado: 15400.00
+Resultado: dano verificado.

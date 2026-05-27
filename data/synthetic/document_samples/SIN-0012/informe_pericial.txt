@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: SIN-0012
+Fecha inspeccion: 2025-12-06
+Placa: ABC-112
+Monto estimado: 12127.00
+Resultado: dano verificado.

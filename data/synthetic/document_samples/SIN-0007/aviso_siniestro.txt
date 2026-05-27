@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0007
+Cobertura: PTxRB
+Fecha evento: 2026-03-18
+Monto reclamado: 1432.00
+Placa: ABC-107
+Narrativa: Colision leve en interseccion con danos en defensa delantera y guardafango.

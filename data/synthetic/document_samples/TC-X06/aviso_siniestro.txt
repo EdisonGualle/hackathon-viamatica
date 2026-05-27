@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-X06
+Cobertura: PTxRB
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-486
+Narrativa: Colision leve control TC-X06 con tercero identificado y documentos consistentes.

@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-RF04-P
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-673
+Referencia siniestro: TC-RF04-P

@@ -25,6 +25,7 @@ sys.path.insert(0, SRC_DIR)
 DB_PATH = os.path.normpath(os.path.join(SRC_DIR, "..", "fraudia.db"))
 
 from ai_agent.claims_agent import FraudiaAgent, answer_with_local_tools
+from scoring import score_simulated_claim
 
 # ──────────────────────────────────────────────
 # TEMA
@@ -183,26 +184,25 @@ GUIDE_STEPS = [
 # DATOS
 # ──────────────────────────────────────────────
 def load_df() -> pd.DataFrame:
-    conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql("""
-        SELECT s.id_siniestro, s.ramo, s.cobertura, s.id_asegurado, s.id_proveedor,
-               s.ciudad AS sucursal, s.fecha_ocurrencia, s.monto_reclamado, s.descripcion,
-               s.dias_inicio_poliza, s.dias_fin_poliza, s.dias_ocurr_reporte,
-               s.documentos_completos, s.historial_siniestros,
-               COALESCE(p.nombre, s.id_proveedor) AS proveedor_nombre,
-               COALESCE(p.tipo, 'N/D') AS proveedor_tipo,
-               'N/D' AS proveedor_ciudad,
-               COALESCE(p.en_lista_restrictiva, 0) AS proveedor_restringido,
-               sr.score_final, sr.score_reglas, sr.score_ml, sr.score_nlp,
-               sr.nivel, sr.reglas_activadas, sr.explicacion,
-               COALESCE(sr.confianza_ia,
-                        ROUND(CAST(sr.score_final AS FLOAT)*0.8, 1)) AS confianza_ia
-        FROM siniestros s
-        JOIN scores_riesgo sr ON s.id_siniestro = sr.id_siniestro
-        LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
-        ORDER BY sr.score_final DESC
-    """, conn)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        df = pd.read_sql("""
+            SELECT s.id_siniestro, s.ramo, s.cobertura, s.id_asegurado, s.id_proveedor,
+                   s.ciudad AS sucursal, s.fecha_ocurrencia, s.monto_reclamado, s.descripcion,
+                   s.dias_inicio_poliza, s.dias_fin_poliza, s.dias_ocurr_reporte,
+                   s.documentos_completos, s.historial_siniestros,
+                   COALESCE(p.nombre, s.id_proveedor) AS proveedor_nombre,
+                   COALESCE(p.tipo, 'N/D') AS proveedor_tipo,
+                   'N/D' AS proveedor_ciudad,
+                   COALESCE(p.en_lista_restrictiva, 0) AS proveedor_restringido,
+                   sr.score_final, sr.score_reglas, sr.score_ml, sr.score_nlp,
+                   sr.nivel, sr.reglas_activadas, sr.explicacion,
+                   COALESCE(sr.confianza_ia,
+                            ROUND(CAST(sr.score_final AS FLOAT)*0.8, 1)) AS confianza_ia
+            FROM siniestros s
+            JOIN scores_riesgo sr ON s.id_siniestro = sr.id_siniestro
+            LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
+            ORDER BY sr.score_final DESC
+        """, conn)
     return df
 
 # ──────────────────────────────────────────────
@@ -1152,17 +1152,16 @@ def render_detalle(sid):
 # TAB 3: RED — intro VIAMATICA
 # ──────────────────────────────────────────────
 def _tab_red_intro():
-    conn = sqlite3.connect(DB_PATH)
-    stats = pd.read_sql("""
-        SELECT
-            SUM(CASE WHEN nivel='ROJO'     THEN 1 ELSE 0 END) AS rojos,
-            SUM(CASE WHEN nivel='AMARILLO' THEN 1 ELSE 0 END) AS amarillos,
-            COUNT(DISTINCT s.id_proveedor)                     AS proveedores
-        FROM scores_riesgo sr
-        JOIN siniestros s ON s.id_siniestro = sr.id_siniestro
-        WHERE nivel IN ('ROJO','AMARILLO')
-    """, conn)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        stats = pd.read_sql("""
+            SELECT
+                SUM(CASE WHEN nivel='ROJO'     THEN 1 ELSE 0 END) AS rojos,
+                SUM(CASE WHEN nivel='AMARILLO' THEN 1 ELSE 0 END) AS amarillos,
+                COUNT(DISTINCT s.id_proveedor)                     AS proveedores
+            FROM scores_riesgo sr
+            JOIN siniestros s ON s.id_siniestro = sr.id_siniestro
+            WHERE nivel IN ('ROJO','AMARILLO')
+        """, conn)
     rojos      = int(stats["rojos"].iloc[0])
     amarillos  = int(stats["amarillos"].iloc[0])
     proveedores = int(stats["proveedores"].iloc[0])
@@ -1253,17 +1252,15 @@ def _tab_red_intro():
 
 
 def _tab_red():
-    conn = sqlite3.connect(DB_PATH)
-    ramos = pd.read_sql("SELECT DISTINCT ramo FROM siniestros ORDER BY ramo",
-                        conn)["ramo"].tolist()
-    proveedores_df = pd.read_sql("""
-        SELECT DISTINCT s.id_proveedor, COALESCE(p.nombre, s.id_proveedor) AS nombre,
-               COALESCE(p.tipo, 'N/D') AS tipo
-        FROM siniestros s
-        LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
-        ORDER BY nombre
-    """, conn)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        ramos = pd.read_sql("SELECT DISTINCT ramo FROM siniestros ORDER BY ramo", conn)["ramo"].tolist()
+        proveedores_df = pd.read_sql("""
+            SELECT DISTINCT s.id_proveedor, COALESCE(p.nombre, s.id_proveedor) AS nombre,
+                   COALESCE(p.tipo, 'N/D') AS tipo
+            FROM siniestros s
+            LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
+            ORDER BY nombre
+        """, conn)
     ramo_opts = [{"label": "Todos los ramos", "value": "TODOS"}] + \
                 [{"label": r, "value": r} for r in ramos]
     proveedor_opts = [{"label": "Todos los proveedores", "value": "TODOS"}] + [
@@ -1426,20 +1423,19 @@ def update_red(ramo, filtro_nivel, proveedor):
     if proveedor and proveedor != "TODOS":
         where_proveedor = "AND s.id_proveedor = ?"
         params.append(proveedor)
-    conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql(f"""
-        SELECT s.id_siniestro, s.id_asegurado, s.id_proveedor, s.ramo,
-               s.cobertura, s.monto_reclamado, sr.nivel, sr.score_final,
-               p.nombre AS proveedor_nombre, p.tipo AS proveedor_tipo,
-               'N/D' AS proveedor_ciudad, p.en_lista_restrictiva
-        FROM siniestros s
-        JOIN scores_riesgo sr ON s.id_siniestro = sr.id_siniestro
-        LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
-        WHERE sr.nivel IN ({nivel_in}) {where_ramo} {where_proveedor}
-        ORDER BY sr.score_final DESC
-        LIMIT 120
-    """, conn, params=params)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        df = pd.read_sql(f"""
+            SELECT s.id_siniestro, s.id_asegurado, s.id_proveedor, s.ramo,
+                   s.cobertura, s.monto_reclamado, sr.nivel, sr.score_final,
+                   p.nombre AS proveedor_nombre, p.tipo AS proveedor_tipo,
+                   'N/D' AS proveedor_ciudad, p.en_lista_restrictiva
+            FROM siniestros s
+            JOIN scores_riesgo sr ON s.id_siniestro = sr.id_siniestro
+            LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
+            WHERE sr.nivel IN ({nivel_in}) {where_ramo} {where_proveedor}
+            ORDER BY sr.score_final DESC
+            LIMIT 120
+        """, conn, params=params)
 
     nodes, edges, seen = [], [], set()
 
@@ -1512,24 +1508,23 @@ def update_red_provider_insights(ramo, filtro_nivel, proveedor):
     if proveedor and proveedor != "TODOS":
         where_proveedor = "AND s.id_proveedor = ?"
         params.append(proveedor)
-    conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql(f"""
-        SELECT s.id_proveedor, COALESCE(p.nombre, s.id_proveedor) AS nombre,
-               COALESCE(p.tipo, 'N/D') AS tipo,
-               'N/D' AS ciudad,
-               COALESCE(p.en_lista_restrictiva, 0) AS en_lista_restrictiva,
-               SUM(CASE WHEN sr.nivel = 'ROJO' THEN 1 ELSE 0 END) AS rojas,
-               SUM(CASE WHEN sr.nivel = 'AMARILLO' THEN 1 ELSE 0 END) AS amarillas,
-               ROUND(AVG(sr.score_final), 1) AS score_promedio
-        FROM siniestros s
-        JOIN scores_riesgo sr ON sr.id_siniestro = s.id_siniestro
-        LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
-        WHERE sr.nivel IN ('ROJO', 'AMARILLO') {where_ramo} {where_proveedor}
-        GROUP BY s.id_proveedor, p.nombre, p.tipo, p.en_lista_restrictiva
-        HAVING rojas > 0
-        ORDER BY rojas DESC, score_promedio DESC
-    """, conn, params=params)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        df = pd.read_sql(f"""
+            SELECT s.id_proveedor, COALESCE(p.nombre, s.id_proveedor) AS nombre,
+                   COALESCE(p.tipo, 'N/D') AS tipo,
+                   'N/D' AS ciudad,
+                   COALESCE(p.en_lista_restrictiva, 0) AS en_lista_restrictiva,
+                   SUM(CASE WHEN sr.nivel = 'ROJO' THEN 1 ELSE 0 END) AS rojas,
+                   SUM(CASE WHEN sr.nivel = 'AMARILLO' THEN 1 ELSE 0 END) AS amarillas,
+                   ROUND(AVG(sr.score_final), 1) AS score_promedio
+            FROM siniestros s
+            JOIN scores_riesgo sr ON sr.id_siniestro = s.id_siniestro
+            LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
+            WHERE sr.nivel IN ('ROJO', 'AMARILLO') {where_ramo} {where_proveedor}
+            GROUP BY s.id_proveedor, p.nombre, p.tipo, p.en_lista_restrictiva
+            HAVING rojas > 0
+            ORDER BY rojas DESC, score_promedio DESC
+        """, conn, params=params)
 
     total_rojas = int(df["rojas"].sum()) if not df.empty else 0
     if df.empty or total_rojas == 0:
@@ -1600,15 +1595,14 @@ def show_node_info(node_data):
     if not node_data:
         raise PreventUpdate
     nid = node_data.get("full", node_data.get("id", ""))
-    conn = sqlite3.connect(DB_PATH)
-    sin  = pd.read_sql(
-        "SELECT s.*, sr.score_final, sr.nivel FROM siniestros s "
-        "JOIN scores_riesgo sr ON s.id_siniestro=sr.id_siniestro "
-        "WHERE s.id_siniestro=?", conn, params=(nid,)
-    )
-    prov = pd.read_sql("SELECT * FROM proveedores WHERE id_proveedor=?",
-                       conn, params=(nid,))
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        sin  = pd.read_sql(
+            "SELECT s.*, sr.score_final, sr.nivel FROM siniestros s "
+            "JOIN scores_riesgo sr ON s.id_siniestro=sr.id_siniestro "
+            "WHERE s.id_siniestro=?", conn, params=(nid,)
+        )
+        prov = pd.read_sql("SELECT * FROM proveedores WHERE id_proveedor=?",
+                           conn, params=(nid,))
 
     CLR = {"ROJO": C["ROJO"], "AMARILLO": C["AMARILLO"], "VERDE": C["VERDE"]}
     items = []
@@ -1858,13 +1852,12 @@ DEMO_CASES = {
 
 
 def _demo_provider_options():
-    conn = sqlite3.connect(DB_PATH)
-    prov = pd.read_sql("""
-        SELECT id_proveedor, nombre, tipo, en_lista_restrictiva
-        FROM proveedores
-        ORDER BY en_lista_restrictiva DESC, nombre
-    """, conn)
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        prov = pd.read_sql("""
+            SELECT id_proveedor, nombre, tipo, en_lista_restrictiva
+            FROM proveedores
+            ORDER BY en_lista_restrictiva DESC, nombre
+        """, conn)
     return [
         {
             "label": f"{r.nombre} ({r.tipo})" + (" - Lista restrictiva" if int(r.en_lista_restrictiva or 0) else ""),
@@ -1986,9 +1979,8 @@ def _calculate_demo_score(ramo, cobertura, monto, suma, dias_inicio, dias_fin, d
     texto = (narrativa or "").lower()
     cobertura_l = (cobertura or "").lower()
 
-    conn = sqlite3.connect(DB_PATH)
-    prov = pd.read_sql("SELECT * FROM proveedores WHERE id_proveedor=?", conn, params=(proveedor,))
-    conn.close()
+    with sqlite3.connect(DB_PATH) as conn:
+        prov = pd.read_sql("SELECT * FROM proveedores WHERE id_proveedor=?", conn, params=(proveedor,))
     en_lista = bool(int(prov.iloc[0]["en_lista_restrictiva"])) if not prov.empty else False
     proveedor_nombre = prov.iloc[0]["nombre"] if not prov.empty else proveedor
 
@@ -2039,23 +2031,6 @@ def _calculate_demo_score(ramo, cobertura, monto, suma, dias_inicio, dias_fin, d
     score_reglas = min(100, sum(r["pts"] for r in reglas))
     score_ml = min(100, max(0, 0.35 * score_reglas + 25 * ratio + (15 if dias_reporte > 7 else 0)))
     score_nlp = 85 if any(w in texto for w in ["inconsistente", "sin rastro", "clonado", "identica"]) else 20
-    score_final = round(0.45 * score_reglas + 0.40 * score_ml + 0.15 * score_nlp, 1)
-    if criticas:
-        score_final = max(score_final, 82.0)
-    elif any(r["codigo"] in {"RF-05", "RF-06"} for r in reglas) or len(reglas) >= 2:
-        score_final = max(score_final, 45.0)
-
-    if criticas or score_final >= 76:
-        nivel = "ROJO"
-        accion = "Escalar a Unidad Antifraude para revision especializada de campo."
-    elif score_final >= 41:
-        nivel = "AMARILLO"
-        accion = "Escalar a Unidad Antifraude para revision documental."
-    else:
-        nivel = "VERDE"
-        accion = "Continuar flujo normal con monitoreo regular."
-
-    confianza = min(97, round(score_final * 0.8 + len(reglas) * 3, 1))
     factores = []
     if criticas:
         factores.append("contiene regla critica que eleva la prioridad del caso")
@@ -2071,12 +2046,15 @@ def _calculate_demo_score(ramo, cobertura, monto, suma, dias_inicio, dias_fin, d
         factores.append("el monto reclamado es alto frente a la suma asegurada")
     if not factores:
         factores.append("no concentra senales relevantes de riesgo")
-
-    return {"nivel": nivel, "score_final": score_final, "score_reglas": round(score_reglas, 1),
-            "score_ml": round(score_ml, 1), "score_nlp": round(score_nlp, 1),
-            "confianza": confianza, "reglas": reglas, "accion": accion,
-            "factores": factores, "ratio": round(ratio * 100, 1),
-            "criticas": sorted(criticas)}
+    return score_simulated_claim(
+        score_reglas=score_reglas,
+        score_ml=score_ml,
+        score_nlp=score_nlp,
+        active_rules=[regla["codigo"] for regla in reglas],
+        factores=factores,
+        ratio_pct=round(ratio * 100, 1),
+        rule_details=reglas,
+    )
 
 
 def _render_demo_result(res):

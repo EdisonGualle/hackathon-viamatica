@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0081
+Cobertura: Inundacion
+Fecha evento: 2026-05-24
+Monto reclamado: 10517.00
+Placa: ABC-181
+Narrativa: Existen inconsistencias entre la declaracion inicial y los documentos adjuntos.

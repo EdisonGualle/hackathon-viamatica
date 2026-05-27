@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0055
+Fecha emision: 2026-03-26
+Proveedor: PRV-006
+Monto: 1502.34
+Placa: ABC-155
+Referencia siniestro: SIN-0055

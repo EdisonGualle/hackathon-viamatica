@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0085
+Cobertura: PTxRB
+Fecha evento: 2026-01-05
+Monto reclamado: 21067.00
+Placa: ABC-185
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.

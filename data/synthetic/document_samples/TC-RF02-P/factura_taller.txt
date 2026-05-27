@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-RF02-P
+Fecha emision: 2026-05-21
+Proveedor: PRV-001
+Monto: 7840.00
+Placa: TC-671
+Referencia siniestro: TC-RF02-P

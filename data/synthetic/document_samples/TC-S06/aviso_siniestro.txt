@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-S06
+Cobertura: RC
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-481
+Narrativa: Colision leve control TC-S06 con tercero identificado y documentos consistentes.

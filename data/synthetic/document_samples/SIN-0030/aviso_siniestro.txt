@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0030
+Cobertura: Todo Riesgo
+Fecha evento: 2025-12-06
+Monto reclamado: 17950.00
+Placa: ABC-130
+Narrativa: El conductor reporta un impacto imposible de reconstruir con los danos observados.

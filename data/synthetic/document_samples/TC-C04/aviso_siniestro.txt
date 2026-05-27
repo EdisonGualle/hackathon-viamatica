@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-C04
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-463
+Narrativa: Colision leve control TC-C04 con tercero identificado y documentos consistentes.

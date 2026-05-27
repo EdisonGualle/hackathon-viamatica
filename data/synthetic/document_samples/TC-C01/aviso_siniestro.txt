@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-C01
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-460
+Narrativa: Colision leve control TC-C01 con tercero identificado y documentos consistentes.

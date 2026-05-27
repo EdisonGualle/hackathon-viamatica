@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0028
+Fecha emision: 2026-05-28
+Proveedor: PRV-005
+Monto: 5782.00
+Placa: ABC-128
+Referencia siniestro: SIN-0028

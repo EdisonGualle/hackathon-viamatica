@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0090
+Cobertura: RC
+Fecha evento: 2025-12-02
+Monto reclamado: 8899.00
+Placa: ABC-190
+Narrativa: El conductor reporta un impacto imposible de reconstruir con los danos observados.

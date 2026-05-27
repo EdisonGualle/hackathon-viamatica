@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0062
+Fecha emision: 2026-05-25
+Proveedor: PRV-007
+Monto: 16916.76
+Placa: ABC-162
+Referencia siniestro: SIN-0062

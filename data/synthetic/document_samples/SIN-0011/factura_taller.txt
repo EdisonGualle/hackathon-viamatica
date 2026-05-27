@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0011
+Fecha emision: 2026-05-18
+Proveedor: PRV-014
+Monto: 7030.52
+Placa: ABC-111
+Referencia siniestro: SIN-0011

@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0044
+Fecha emision: 2026-02-13
+Proveedor: PRV-013
+Monto: 16137.66
+Placa: ABC-144
+Referencia siniestro: SIN-0044

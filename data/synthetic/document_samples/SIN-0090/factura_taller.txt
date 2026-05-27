@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0090
+Fecha emision: 2025-12-03
+Proveedor: PRV-011
+Monto: 8721.02
+Placa: ABC-190
+Referencia siniestro: SIN-0090

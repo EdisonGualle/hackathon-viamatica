@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0094
+Cobertura: Incendio
+Fecha evento: 2026-05-09
+Monto reclamado: 12073.00
+Placa: ABC-194
+Narrativa: Colision leve en interseccion con danos en defensa delantera y guardafango.

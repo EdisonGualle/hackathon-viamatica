@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0005
+Cobertura: RC
+Fecha evento: 2025-12-24
+Monto reclamado: 24714.00
+Placa: ABC-105
+Narrativa: Impacto por alcance en trafico lento con declaracion consistente del conductor.

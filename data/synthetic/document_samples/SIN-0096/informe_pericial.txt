@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: SIN-0096
+Fecha inspeccion: 2026-01-21
+Placa: ABC-196
+Monto estimado: 33561.00
+Resultado: dano verificado.

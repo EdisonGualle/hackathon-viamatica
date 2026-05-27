@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-S14
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-27
+Monto reclamado: 15400.00
+Placa: TC-480
+Narrativa: Colision leve control TC-S14 con tercero identificado y documentos consistentes.

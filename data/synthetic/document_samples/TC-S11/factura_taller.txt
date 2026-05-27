@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-TC-S11
+Fecha emision: 2026-05-28
+Proveedor: PRV-001
+Monto: 4960.00
+Placa: TC-477
+Referencia siniestro: TC-S11

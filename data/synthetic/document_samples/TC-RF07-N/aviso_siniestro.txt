@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-RF07-N
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-674
+Narrativa: Narrativa unica negativa TC-RF07-N sin patron repetido.

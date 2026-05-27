@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0057
+Fecha emision: 2026-02-16
+Proveedor: PRV-012
+Monto: 10903.48
+Placa: ABC-157
+Referencia siniestro: SIN-0057

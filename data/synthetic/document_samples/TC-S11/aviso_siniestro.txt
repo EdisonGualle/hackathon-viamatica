@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: TC-S11
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-27
+Monto reclamado: 8000.00
+Placa: TC-477
+Narrativa: Existen inconsistencias entre la declaracion inicial y los documentos adjuntos.

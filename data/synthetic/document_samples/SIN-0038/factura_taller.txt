@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0038
+Fecha emision: 2025-12-27
+Proveedor: PRV-015
+Monto: 29599.92
+Placa: ABC-138
+Referencia siniestro: SIN-0038

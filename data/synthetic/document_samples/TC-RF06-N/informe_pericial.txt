@@ -1,0 +1,6 @@
+INFORME PERICIAL
+Caso: TC-RF06-N
+Fecha inspeccion: 2026-05-29
+Placa: TC-673
+Monto estimado: 8000.00
+Resultado: dano verificado.

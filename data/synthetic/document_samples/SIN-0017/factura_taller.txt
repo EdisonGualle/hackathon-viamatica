@@ -1,0 +1,7 @@
+FACTURA TALLER
+Numero: FAC-SIN-0017
+Fecha emision: 2026-03-24
+Proveedor: PRV-012
+Monto: 2695.00
+Placa: ABC-117
+Referencia siniestro: SIN-0017

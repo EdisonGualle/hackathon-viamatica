@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0062
+Cobertura: Todo Riesgo
+Fecha evento: 2026-05-24
+Monto reclamado: 17262.00
+Placa: ABC-162
+Narrativa: Afectacion por inundacion parcial en parqueadero luego de lluvia intensa.

@@ -1,0 +1,7 @@
+AVISO DE SINIESTRO
+Siniestro: SIN-0001
+Cobertura: Incendio
+Fecha evento: 2026-02-27
+Monto reclamado: 5202.00
+Placa: ABC-101
+Narrativa: Colision leve en interseccion con danos en defensa delantera y guardafango.
