@@ -1,0 +1,12 @@
+dash>=2.17
+dash-cytoscape>=0.3.0
+plotly>=5.22
+pandas>=2.0
+numpy>=1.26
+scikit-learn>=1.5
+xgboost>=2.0
+groq>=0.9
+python-dotenv>=1.0
+fastapi>=0.115
+uvicorn>=0.30
+pytest>=8.0

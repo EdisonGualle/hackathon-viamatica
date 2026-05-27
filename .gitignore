@@ -1,0 +1,56 @@
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Local databases and generated data artifacts
+*.db
+*.sqlite
+*.sqlite3
+data/processed/
+data/synthetic/*.csv
+
+# Trained model artifacts
+*.pkl
+*.joblib
+*.model
+
+# Logs and runtime files
+*.log
+*.pid
+dash.err.log
+dash.out.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
