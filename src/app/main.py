@@ -186,12 +186,12 @@ def load_df() -> pd.DataFrame:
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql("""
         SELECT s.id_siniestro, s.ramo, s.cobertura, s.id_asegurado, s.id_proveedor,
-               s.sucursal, s.fecha_ocurrencia, s.monto_reclamado, s.descripcion,
+               s.ciudad AS sucursal, s.fecha_ocurrencia, s.monto_reclamado, s.descripcion,
                s.dias_inicio_poliza, s.dias_fin_poliza, s.dias_ocurr_reporte,
                s.documentos_completos, s.historial_siniestros,
                COALESCE(p.nombre, s.id_proveedor) AS proveedor_nombre,
                COALESCE(p.tipo, 'N/D') AS proveedor_tipo,
-               COALESCE(p.ciudad, 'N/D') AS proveedor_ciudad,
+               'N/D' AS proveedor_ciudad,
                COALESCE(p.en_lista_restrictiva, 0) AS proveedor_restringido,
                sr.score_final, sr.score_reglas, sr.score_ml, sr.score_nlp,
                sr.nivel, sr.reglas_activadas, sr.explicacion,
@@ -1431,7 +1431,7 @@ def update_red(ramo, filtro_nivel, proveedor):
         SELECT s.id_siniestro, s.id_asegurado, s.id_proveedor, s.ramo,
                s.cobertura, s.monto_reclamado, sr.nivel, sr.score_final,
                p.nombre AS proveedor_nombre, p.tipo AS proveedor_tipo,
-               p.ciudad AS proveedor_ciudad, p.en_lista_restrictiva
+               'N/D' AS proveedor_ciudad, p.en_lista_restrictiva
         FROM siniestros s
         JOIN scores_riesgo sr ON s.id_siniestro = sr.id_siniestro
         LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
@@ -1516,7 +1516,7 @@ def update_red_provider_insights(ramo, filtro_nivel, proveedor):
     df = pd.read_sql(f"""
         SELECT s.id_proveedor, COALESCE(p.nombre, s.id_proveedor) AS nombre,
                COALESCE(p.tipo, 'N/D') AS tipo,
-               COALESCE(p.ciudad, 'N/D') AS ciudad,
+               'N/D' AS ciudad,
                COALESCE(p.en_lista_restrictiva, 0) AS en_lista_restrictiva,
                SUM(CASE WHEN sr.nivel = 'ROJO' THEN 1 ELSE 0 END) AS rojas,
                SUM(CASE WHEN sr.nivel = 'AMARILLO' THEN 1 ELSE 0 END) AS amarillas,
@@ -1525,7 +1525,7 @@ def update_red_provider_insights(ramo, filtro_nivel, proveedor):
         JOIN scores_riesgo sr ON sr.id_siniestro = s.id_siniestro
         LEFT JOIN proveedores p ON p.id_proveedor = s.id_proveedor
         WHERE sr.nivel IN ('ROJO', 'AMARILLO') {where_ramo} {where_proveedor}
-        GROUP BY s.id_proveedor, p.nombre, p.tipo, p.ciudad, p.en_lista_restrictiva
+        GROUP BY s.id_proveedor, p.nombre, p.tipo, p.en_lista_restrictiva
         HAVING rojas > 0
         ORDER BY rojas DESC, score_promedio DESC
     """, conn, params=params)
@@ -1845,13 +1845,13 @@ DEMO_CASES = {
     "robo": {
         "ramo": "Vehiculos", "cobertura": "Perdida Total por Robo", "monto": 44500, "suma": 45000,
         "dias_inicio": 1, "dias_fin": 364, "dias_reporte": 10, "docs": "NO",
-        "proveedor": "PRV-001",
+        "proveedor": "PRV-003",
         "narrativa": "Robo total sin rastro del tercero, relato inconsistente y denuncia tardia.",
     },
     "proveedor": {
         "ramo": "Vehiculos", "cobertura": "Dano", "monto": 18000, "suma": 45000,
         "dias_inicio": 75, "dias_fin": 260, "dias_reporte": 2, "docs": "SI",
-        "proveedor": "PRV-002",
+        "proveedor": "PRV-009",
         "narrativa": "Reparacion solicitada por proveedor observado previamente en casos con alertas.",
     },
 }
